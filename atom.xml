@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title type="text">Obsessed With Details</title>
     <subtitle type="html">My personal blog</subtitle>
-    <updated>2020-12-11T20:00:13&#43;02:00</updated>
+    <updated>2020-12-11T21:30:03&#43;02:00</updated>
     <id>/</id>
     <link rel="alternate" type="text/html" href="/" />
     <link rel="self" type="application/atom&#43;xml" href="/atom.xml" />
@@ -22,11 +22,7 @@
             <id>/posts/hello-world/</id>
             <updated>2020-12-11T13:49:38&#43;02:00</updated>
             <published>2020-12-11T09:58:18&#43;02:00</published>
-            <author>
-                    <name>Sharon Hadas</name>
-                    <uri>/</uri>
-                    <email>sharonhadas7@gmail.com</email>
-                    </author>
+            
             <summary type="html">This is my first post. How are you doing?</summary>
             
                 <content type="html">&lt;p&gt;This is my first post. How are you doing?&lt;/p&gt;
