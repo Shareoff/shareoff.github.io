@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
     <title type="text">Obsessed With Details</title>
     <subtitle type="html">My personal blog</subtitle>
-    <updated>2020-12-16T10:21:37&#43;02:00</updated>
+    <updated>2020-12-21T08:34:05&#43;02:00</updated>
     <id>/</id>
     <link rel="alternate" type="text/html" href="/" />
     <link rel="self" type="application/atom&#43;xml" href="/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">What is D (Dlang)?</title>
             <link rel="alternate" type="text/html" href="/posts/what-is-d/" />
             <id>/posts/what-is-d/</id>
-            <updated>2020-12-16T10:21:04&#43;02:00</updated>
+            <updated>2020-12-21T08:33:45&#43;02:00</updated>
             <published>2020-12-16T09:25:11&#43;02:00</published>
             
             <summary type="html">It&#39;s just like C, except it&#39;s D. Well, kind of...</summary>
@@ -119,8 +119,9 @@ Well, because of &lt;strong&gt;exceptions&lt;/strong&gt; and how they are implem
 &lt;p&gt;If you&amp;rsquo;re anything like me, here comes the part where you go, &amp;ldquo;Well, that sounds great. D is basically the perfect C++ replacement. So why isn&amp;rsquo;t the entire world using D?&amp;rdquo;&lt;/p&gt;
 &lt;h2 id=&#34;why-i-think-d-has-not-replaced-c&#34;&gt;Why (I think) D has not replaced C++&lt;/h2&gt;
 &lt;p&gt;The truth is, D is &lt;a href=&#34;https://dlang.org/orgs-using-d.html&#34;&gt;not very popular&lt;/a&gt;. I can&amp;rsquo;t be sure what, exactly, is the combination of limitations that made so many developers not choose to move to D. But there are a few things that cannot be ignored and are worth mentioning.&lt;/p&gt;
-&lt;h3 id=&#34;subpar-c-integration&#34;&gt;Subpar C++ integration&lt;/h3&gt;
-&lt;p&gt;It is rare projects are completely written from scratch, and often projects already have a respectable existing code base in C++. Unfortunately, because of its design choices, D &lt;strong&gt;does not&lt;/strong&gt; integrate seamlessly with C++. It can interface with C++, under certain assumptions - but bottom line, it&amp;rsquo;s not guaranteed and not perfect. This in itself is a huge problem, but then also:&lt;/p&gt;
+&lt;h3 id=&#34;imperfect-c-integration&#34;&gt;Imperfect C++ Integration&lt;/h3&gt;
+&lt;p&gt;It is rare projects are completely written from scratch, and often projects already have a respectable existing code base in C++. &lt;strong&gt;The good news&lt;/strong&gt; is that D&amp;rsquo;s C++ integration is actually some of the best on the market - most languages only natively support interfacing with C, and then you have to go through some hoops to integrate your C++ code.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The bad news&lt;/strong&gt; is that it has some limitations, it requires a bit of work and often ends up being impractical for larger projects or libraries. This in itself is somewhat of a problem, but really it only serves to make the next problem even more severe:&lt;/p&gt;
 &lt;h3 id=&#34;small-community-no-libraries&#34;&gt;Small Community, No Libraries&lt;/h3&gt;
 &lt;p&gt;This kind of cycle is very hard to break out of - D does not have the external library support that a language such as C++ has, because it&amp;rsquo;s smaller, and since you don&amp;rsquo;t integrate flawlessly with C++ it&amp;rsquo;s not always worth the effort to try and use a C++ library. So many developers choose the language which has more external libraries, which leads to less libraries being developed, which leads to less developers choosing D, etc.&lt;/p&gt;
 &lt;p&gt;Unfortunately, when writing D, other than the standard library, the &lt;strong&gt;ecosystem is a bit thin&lt;/strong&gt; and you don&amp;rsquo;t end up relying on external libraries very often. For the most part, that&amp;rsquo;s a bad thing, because you end up doing a lot of extra work.&lt;/p&gt;
@@ -132,7 +133,7 @@ Well, because of &lt;strong&gt;exceptions&lt;/strong&gt; and how they are implem
 &lt;h3 id=&#34;tldr&#34;&gt;TL;DR&lt;/h3&gt;
 &lt;p&gt;D is a really cool language that improves on C++ in almost every way imaginable. However it has not fully taken off and it looks kind of unlikely it will. Its compile time programming features are particularly noteworthy, making it possibly the best language for writing compile time code&lt;sup id=&#34;fnref:4&#34;&gt;&lt;a href=&#34;/posts/what-is-d/#fn:4&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;. It allows you to write &lt;strong&gt;beautiful code&lt;/strong&gt;, which is what we all want, while having C++-like performance.&lt;/p&gt;
 &lt;h3 id=&#34;personal-note&#34;&gt;Personal Note&lt;/h3&gt;
-&lt;p&gt;I am personally really enjoying learning D - it is a language with a lot of depth which is very enjoyable for me, but for the most part it is &lt;strong&gt;relatively easy&lt;/strong&gt; and &lt;strong&gt;intuitive to learn&lt;/strong&gt; as a C++ developer. And seeing the ways its compile time capabilities are used in our code base at work and in most D code bases is mind blowing and extremely satisfying. Either way, it is going to be a major part of my life for a while, so I hope you&amp;rsquo;ll join me here while I explore the intricacies of D!&lt;/p&gt;
+&lt;p&gt;I am personally really enjoying learning D - it is a language with a lot of depth which is very enjoyable for me, but for the most part it is &lt;strong&gt;relatively easy&lt;/strong&gt; and &lt;strong&gt;intuitive to learn&lt;/strong&gt; as a C++ developer. And seeing the ways its compile time capabilities are used in our code base at my company &lt;a href=&#34;https://weka.io&#34;&gt;weka.io&lt;/a&gt; and in most D code bases is mind blowing and extremely satisfying. Either way, it is going to be a major part of my life for a while, so I hope you&amp;rsquo;ll join me here while I explore the intricacies of D!&lt;/p&gt;
 &lt;h3 id=&#34;further-reading&#34;&gt;Further Reading&lt;/h3&gt;
 &lt;p&gt;If you&amp;rsquo;re interested and would like to read (or hear) more, here are some resources I can personally recommend:&lt;/p&gt;
 &lt;ul&gt;
@@ -150,7 +151,7 @@ Well, because of &lt;strong&gt;exceptions&lt;/strong&gt; and how they are implem
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.youtube.com/channel/UC5DNdmeE-_lS6VhCVydkVvQ&#34;&gt;https://www.youtube.com/channel/UC5DNdmeE-_lS6VhCVydkVvQ&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;The official youtube channel of D, has lectures from DConf (the annual D conference)&lt;/p&gt;
+&lt;p&gt;The official youtube channel of the D language, has lectures from DConf (the annual D conference)&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
@@ -161,7 +162,7 @@ Well, because of &lt;strong&gt;exceptions&lt;/strong&gt; and how they are implem
 &lt;/li&gt;
 &lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
 &lt;p&gt;Don&amp;rsquo;t believe me? Watch &lt;a href=&#34;https://www.youtube.com/watch?v=hEx5DNLWGgA&#34;&gt;this excellent lecture by Herb Sutter&lt;/a&gt;, who is a well respected figure in the C++ community - he&amp;rsquo;s particularly famous for writing great books such as the Exceptional C++ series. In short, he provides many solutions for what he calls &amp;ldquo;by default&amp;rdquo; memory management - simply using the correct memory managing types and relying on destructors to write sound code which will not leak.&lt;/p&gt;
-&lt;p&gt;This in itself requires you to have a decent amount of C++ knowledge to correctly implement, but then comes the kicker - he presents a case, not very theoretical or far-fetched, for which there is currently &lt;strong&gt;no good solution&lt;/strong&gt; in C++! And then comes up with a solution himself, which is actually incredibly dense and complicated. As far as I know, there is no or easy method or agreed upon consensus on how to solve this problem to this day. &lt;a href=&#34;/posts/what-is-d/#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This in itself requires you to have a decent amount of C++ knowledge to correctly implement, but then comes the kicker - he presents a case, not very theoretical or far-fetched, for which there is currently &lt;strong&gt;no good solution&lt;/strong&gt; in C++! And then comes up with a solution himself, which is actually incredibly dense and complicated. As far as I know, there is no easy method or agreed upon consensus on how to solve this problem to this day. &lt;a href=&#34;/posts/what-is-d/#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
 &lt;p&gt;Speaking from my personal experience here so of course I could be wrong. If you know of python that generates C++ as a small part of a larger C++ project that is easy to maintain and convenient to use let me know and I will gladly correct myself. Unfortunately, I&amp;rsquo;ve seen multiple code generating systems designed from scratch and have been involved in a few of them and the costs of having something like that in your project are almost always higher than you might think. &lt;a href=&#34;/posts/what-is-d/#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
