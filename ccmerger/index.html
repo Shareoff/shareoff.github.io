@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>CC Merger Tool</title>
+        <link href="style.css" type="text/css" rel="stylesheet">
+        <meta charset="utf-8">
+    </head>
+
+<div class="section">
+    <h1 style="color: #d19cff">CC Merger tool</h2>
+    <h3>A tool for Rhythm Doctor level creators that takes multiple custom characters and merges them into one.</p>
+</div>
+
+<form class="form" id="form">
+    <p>The .json file of the custom character:</p>
+    <div class="filename">
+        <input type="file" accept=".json" id="jsoninput" required>
+    </div>
+    <p>The .png spritesheet of the custom character:</p>
+    <div class="filename">
+        <input type="file" accept=".png" id="pnginput" required>
+    </div>
+    <div class="prefix-input">
+        <p>A prefix to add to all the expressions of this custom character (optional):</p>
+        <div class="help-tip"><p>This is to prevent expression name conflicts between two or more of the custom characters. This means you should have a prefix set for all but one of the custom characters you add (probably), to ensure that you only get one neutral expression.</p></div>
+    </div>
+    <input type="text" id="prefixinput">
+    <br>
+    <input type="submit" class="submit" value="Add this character!">
+    <input type="reset" class="close-button" onClick=closeForm() value="Close">
+</form>
+
+<div class="add-button-section" id="add-button-section">
+    <button id="add-button" class="add-button" onClick=clickAddButton()><p>Add a custom character</p></button>
+</div>
+
+
+<h2 style="color: #d19cff">Added characters:</h2>
+<p id="no-ccs">You have not added any custom characters yet. Click the button above to get started!</p>
+<div class="cc-list" id="cc-list">
+    <template id="cc" class="cc-inner">
+        <div class="cc-inner">
+            <button class="xbutton" id="xbutton" onClick="removeCC(event)"/></button>
+            <div class="cc-text">
+                <p></p>
+            </div>
+        </div>
+    </template>
+</div>
+<div class="summary" id="summary">
+    <h4 class="summary-header" id="summary-header">Summary:</h4>
+    <p id="cc-summary">
+</div>
+
+
+<p>Finally, insert the name for the final (merged) custom character:</p>
+<input type="text" id="cc-name" style="width: 200"><br>
+<button id="merge-button" class="merge-button" onClick=merge()><p>Merge all CCs!</p></button>
+
+
+<div class="debug" id="debug">
+</div>
+
+<script src="main.js"></script>
