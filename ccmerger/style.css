@@ -4,10 +4,10 @@ html {
 	background-size: 100vmax;
 	width: 100%;
 	height: 100%;
-	position: fixed;
+	position: static;
 	top: 0;
 	left: 0;
-	overflow: hidden;
+	overflow: auto;
 	font-family: 'Open Sans', sans-serif;
 	color: white;
 }
