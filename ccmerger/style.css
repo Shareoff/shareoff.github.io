@@ -103,6 +103,7 @@ html {
 
 .xbutton {
     opacity: 0.8;
+    border-radius: 5%;
 	border: none;
 	cursor: pointer;
 	background-color: rgb(110,110,110);

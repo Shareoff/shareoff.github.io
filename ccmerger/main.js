@@ -498,7 +498,7 @@ class MergedSpritesheet {
 function download(name, json, spritesheet) {
 	var zip = new JSZip()
 	let img_url = spritesheet.toDataURL()
-	zip.file(name + ".png", img_url.substr(url.indexOf(',')+1), {base64: true})
+	zip.file(name + ".png", img_url.substr(img_url.indexOf(',')+1), {base64: true})
 	zip.file(name + ".json", JSON.stringify(json, null, 4))
 
 	zip.generateAsync({type:"blob"}).then(function (blob) {
