@@ -32,8 +32,13 @@ class JSONHandler {
 		let handler = this
 
 		reader.onload = function() {
-			handler.contents = JSON.parse(removeTrailingCommas(reader.result))
-			handler.loaded = true
+			try {
+				handler.contents = JSON.parse(removeTrailingCommas(reader.result))
+				handler.loaded = true
+			} catch (e) {
+				// this is kinda funny but I guess loaded = false and then just check it in the callback?
+				console.log(e)
+			}
 			handler.onLoadedCallback()
 		}
 	}
@@ -48,6 +53,16 @@ class JSONHandler {
 
 	get name() {
 		return this.json.name
+	}
+
+	hasExpression(expr_name) {
+		this.expressions.forEach(function(expr) {
+			if (expr["name"] == expr_name) {
+				return true
+			}
+		})
+
+		return false
 	}
 }
 
@@ -85,12 +100,16 @@ class SpritesheetHandler {
 	}
 }
 
+function getCCNameFromPath(full_path) {
+	 return full_path.split('\\').pop().split('/').pop().split('.')[0];
+}
 
 class CustomCharacter {
 	constructor(json, spritesheet, prefix) {
 		this.json = json
 		this.spritesheet = spritesheet
 		this.prefix = prefix
+		this.name = getCCNameFromPath(json.name)
 	}
 
 	get x_frame_size() {
@@ -110,15 +129,11 @@ class CustomCharacter {
 	}
 }
 
-function getFilenameNoExtension(full_path) {
-	 return full_path.split('\\').pop().split('/').pop().split('.')[0];
-}
-
 curr_json = null
 curr_spritesheet = null
 
 function validateMatchingFilenames() {
-	if (json_input.value != "" && spritesheet_input.value != "" && getFilenameNoExtension(json_input.value) != getFilenameNoExtension(spritesheet_input.value)) {
+	if (json_input.value != "" && spritesheet_input.value != "" && getCCNameFromPath(json_input.value) != getCCNameFromPath(spritesheet_input.value)) {
 		spritesheet_input.setCustomValidity("The .json and spritesheet .png filenames do not match!")
 	} else {
 		spritesheet_input.setCustomValidity('')
@@ -142,7 +157,9 @@ function validateLoadedSpritesheet() {
 }
 
 function validateLoadedJson() {
-	if (!curr_json.size || !curr_json.expressions) {
+	if (!curr_json.loaded) {
+		json_input.setCustomValidity("Error parsing .json (this .json appears to be malformed)")
+	} else if (!curr_json.size || !curr_json.expressions) {
 		json_input.setCustomValidity("This does not appear to be a valid .json representing a custom character!")
 	} else {
 		json_input.setCustomValidity("")
@@ -260,18 +277,28 @@ class Estimate {
 	}
 }
 
+function updateMergeSection() {
+	merge_section = document.getElementById("merge-section")
+	if (characters.length >= 2) {
+		merge_section.style.display = "contents"
+	} else {
+		merge_section.style.display = "none"
+	}
+}
+
 let estimateCalc = new Estimate()
 function addCC(cc) {
 	clone = document.getElementById("cc").content.cloneNode(true)
-	cc_line = getFilenameNoExtension(cc.json.name)
+	cc_line = cc.name
 	if (cc.prefix != '') {
 		cc_line += " (prefix: " + cc.prefix + ")"
 	}
 	clone.querySelector("p").innerHTML = cc_line
-	document.getElementById("cc-list").appendChild(clone)
+	cc_list.appendChild(clone)
 	no_ccs.style.display = "none"
 	characters.push(cc)
 	estimateCalc.addCCAndUpdateEstimate(cc)
+	updateMergeSection()
 }
 
 
@@ -293,17 +320,17 @@ function formatSize(size) {
 }
 
 
+BASE_CC_HTML_INDEX = 1 // the first index of a possible cc
 function removeCC(e) {
 	entry_to_remove = e.target.parentNode
-	BASE_INDEX = 1 // the first index of a possible cc
-	remove_index = Array.prototype.indexOf.call(cc_list.children, entry_to_remove) - BASE_INDEX
+	remove_index = Array.prototype.indexOf.call(cc_list.children, entry_to_remove) - BASE_CC_HTML_INDEX
 	entry_to_remove.remove()
 	characters.splice(remove_index, 1)
 	estimateCalc.removeCCAndUpdateEstimate()
 	if (characters.length == 0) {
 		no_ccs.style.display = "contents"
-		// dont forget to hide summary header
 	}
+	updateMergeSection()
 }
 
 function checkDoneLoading() {
@@ -325,16 +352,44 @@ function checkDoneLoading() {
 	}
 }
 
+function confirmationsOnSubmit() {
+	var curr_name = getCCNameFromPath(curr_json.json.name)
+	var curr_prefix = form.elements["prefixinput"].value
+	characters.forEach(function(cc) {
+		if (cc.name == curr_name) {
+			if (!window.confirm("You have already added a custom character named " + cc.name + "! Are you sure you want to continue?")) {
+				return false
+			}
+		}
+
+		if (cc.prefix == curr_prefix) {
+			text = "You have already added a custom character "
+			if (cc.prefix == "") {
+				text += "with an empty prefix"
+			} else {
+				text += "with a prefix of " + cc.prefix
+			}
+			text += "! This may cause collisions in expression names. Are you sure you want to continue?"
+			if (!window.confirm(text)) {
+				return false
+			}
+		}
+	})
+
+	return true
+}
+
 form.addEventListener('submit', (event) => {
 	event.preventDefault()
 
-	if (form.checkValidity()) {
+	if (form.checkValidity() && confirmationsOnSubmit()) {
 		cc = new CustomCharacter(curr_json, curr_spritesheet, form.elements["prefixinput"].value)
+		curr_json = null
+		curr_spritesheet = null
 		closeForm()
 		form.reset()
 		addCC(cc)
-	}
-	else {
+	} else {
 		form.reportValidity()
 	}
 })
@@ -370,7 +425,7 @@ class MergedJSON {
 		var new_expressions = []
 		expressions.forEach(function(expression) {
 			expression.name = prefix + expression.name
-			// todo support portrait offsets?? broken for now sorry
+			// todo support portrait offsets?? broken for now sorry idk how this is supposed to work
 			expression.frames.forEach(function(frame, index, frames) {
 				frames[index] = frame + base_frame
 			})
@@ -380,16 +435,6 @@ class MergedJSON {
 
 		this.current_frame += total_frames
 		this.json["clips"] = this.expressions.concat(new_expressions)
-	}
-
-	// this one is a shameless steal from DeadlySprinklez code, ty sprinklez!!
-	download(merged_cc_name) {
-		let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.json, null, 4));
-
-		let downloader = document.createElement("a");
-		downloader.setAttribute("href", dataUri);
-		downloader.setAttribute("download", merged_cc_name + ".json");
-		downloader.click();
 	}
 }
 
@@ -448,16 +493,29 @@ class MergedSpritesheet {
 			curr_cc_pos = cc_iter.next()
 		}
 	}
+}
 
-	download(merged_cc_name) {
-		let downloadLink = document.createElement('a');
-    	downloadLink.setAttribute('download', merged_cc_name + '.png');;
-	    this.canvas.toBlob(function(blob) {
-	      let url = URL.createObjectURL(blob);
-	      downloadLink.setAttribute('href', url);
-	      downloadLink.click();
-  		});
+function download(name, json, spritesheet) {
+	var zip = new JSZip()
+	let img_url = spritesheet.toDataURL()
+	zip.file(name + ".png", img_url.substr(url.indexOf(',')+1), {base64: true})
+	zip.file(name + ".json", JSON.stringify(json, null, 4))
+
+	zip.generateAsync({type:"blob"}).then(function (blob) {
+		saveAs(blob, name + ".zip")
+	})
+}
+
+cc_name = document.getElementById("cc-name")
+function cleanup() {
+	while (cc_list.children.length > BASE_CC_HTML_INDEX) {
+		cc_list.removeChild(cc_list.children[BASE_CC_HTML_INDEX])
 	}
+	characters = []
+	estimateCalc.removeCCAndUpdateEstimate()
+	no_ccs.style.display = "contents"
+	cc_name.value = ""
+	updateMergeSection()
 }
 
 function merge() {
@@ -466,8 +524,7 @@ function merge() {
 		return
 	}
 
-	cc_name = document.getElementById("cc-name").value
-	if (cc_name == "") {
+	if (cc_name.value == "") {
 		window.alert("Please enter a CC name before attempting to merge.")
 		return
 	}
@@ -486,6 +543,6 @@ function merge() {
 		merged_json.addCCExpressions(cc.json.expressions, cc.prefix, cc.num_frames)
 	})
 
-	merged_spritesheet.download(cc_name)
-	merged_json.download(cc_name)
+	download(cc_name.value, merged_json.json, merged_spritesheet.canvas)
+	cleanup()
 }

@@ -87,6 +87,10 @@ html {
   	justify-content: flex-start;
 }
 
+.mid-header {
+	color: #d19cff;
+}
+
 .cc-list {
 	max-height: 35%;
 	overflow-y: auto;
@@ -129,4 +133,8 @@ html {
 
 .warning {
 	color: #fffd82;
+}
+
+.merge-section {
+	display: none;
 }
