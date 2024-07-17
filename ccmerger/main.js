@@ -105,23 +105,44 @@ function getCCNameFromPath(full_path) {
 }
 
 class CustomCharacter {
-	constructor(json, spritesheet, prefix) {
-		this.json = json
+	constructor(spritesheet, prefix, has_json, json = null) {
 		this.spritesheet = spritesheet
 		this.prefix = prefix
-		this.name = getCCNameFromPath(json.name)
+		this.name = getCCNameFromPath(spritesheet.file.name)
+		this.has_json = has_json
+		this.json = json
 	}
 
 	get x_frame_size() {
-		return this.json.size[0]
+		if (this.has_json) {
+			return this.json.size[0]
+		} else {
+			return this.spritesheet.width
+		}
 	}
 
 	get y_frame_size() {
-		return this.json.size[1]
+		if (this.has_json) {
+			return this.json.size[1]
+		} else {
+			return this.spritesheet.height
+		}
 	}
 
 	get num_expr() {
-		return this.json.expressions.length
+		if (this.has_json) {
+			return this.json.expressions.length
+		} else {
+			return 1
+		}
+	}
+
+	get expressions() {
+		if (this.has_json) {
+			return this.json.expressions
+		} else {
+			return [{"name": this.name, "frames": [0], "loop": "onBeat", "fps": 0, "loopStart": 0, "portraitOffset": [0,0],"portraitSize": [25,25], "portraitScale": 2}]
+		}
 	}
 
 	get num_frames() {
@@ -145,11 +166,7 @@ function validateLoadedSpritesheet() {
 		return
 	}
 
-	if (!curr_json.loaded) {
-		spritesheet_input.setCustomValidity("Please insert a JSON file first!")
-	}
-
-	if (curr_spritesheet.width % curr_json.size[0] != 0 || curr_spritesheet.height % curr_json.size[1] != 0) {
+	if (json_input.value != "" && (curr_spritesheet.width % curr_json.size[0] != 0 || curr_spritesheet.height % curr_json.size[1] != 0)) {
 		spritesheet_input.setCustomValidity("Spritesheet dimensions do not match the frame info from the json")
 	}
 
@@ -338,7 +355,7 @@ function checkDoneLoading() {
 		return // do nothing if they're already invalid, don't want to override the existing errors
 	}
 
-	if (!curr_json.loaded) {
+	if (json_input.value != "" && !curr_json.loaded) {
 		// this can technically race, huh... I'm too lazy to fix hopefully it will never happen to anyone
 		json_input.setCustomValidity("Not loaded yet, please try again in a few seconds...")
 	} else {
@@ -353,7 +370,7 @@ function checkDoneLoading() {
 }
 
 function confirmationsOnSubmit() {
-	var curr_name = getCCNameFromPath(curr_json.json.name)
+	var curr_name = getCCNameFromPath(curr_spritesheet.file.name)
 	var curr_prefix = form.elements["prefixinput"].value
 	characters.forEach(function(cc) {
 		if (cc.name == curr_name) {
@@ -383,7 +400,7 @@ form.addEventListener('submit', (event) => {
 	event.preventDefault()
 
 	if (form.checkValidity() && confirmationsOnSubmit()) {
-		cc = new CustomCharacter(curr_json, curr_spritesheet, form.elements["prefixinput"].value)
+		cc = new CustomCharacter(curr_spritesheet, form.elements["prefixinput"].value, json_input.value != "", curr_json)
 		curr_json = null
 		curr_spritesheet = null
 		closeForm()
@@ -540,7 +557,7 @@ function merge() {
 	let merged_spritesheet = new MergedSpritesheet(estimateCalc.total_x, estimateCalc.total_y, estimateCalc.max_x, estimateCalc.max_y)
 	characters.forEach(function(cc) {
 		merged_spritesheet.addCCSpritesheet(cc.spritesheet, cc.x_frame_size, cc.y_frame_size)
-		merged_json.addCCExpressions(cc.json.expressions, cc.prefix, cc.num_frames)
+		merged_json.addCCExpressions(cc.expressions, cc.prefix, cc.num_frames)
 	})
 
 	download(cc_name.value, merged_json.json, merged_spritesheet.canvas)
