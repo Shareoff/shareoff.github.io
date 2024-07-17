@@ -379,18 +379,18 @@ function confirmationsOnSubmit() {
 			}
 		}
 
-		if (cc.prefix == curr_prefix) {
-			text = "You have already added a custom character "
-			if (cc.prefix == "") {
-				text += "with an empty prefix"
-			} else {
-				text += "with a prefix of " + cc.prefix
-			}
-			text += "! This may cause collisions in expression names. Are you sure you want to continue?"
-			if (!window.confirm(text)) {
-				return false
-			}
-		}
+		// if (cc.prefix == curr_prefix) {
+		// 	text = "You have already added a custom character "
+		// 	if (cc.prefix == "") {
+		// 		text += "with an empty prefix"
+		// 	} else {
+		// 		text += "with a prefix of " + cc.prefix
+		// 	}
+		// 	text += "! This may cause collisions in expression names. Are you sure you want to continue?"
+		// 	if (!window.confirm(text)) {
+		// 		return false
+		// 	}
+		// }
 	})
 
 	return true
